@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="id" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0f1219" />
+    <meta
+      name="description"
+      content="LumiHome — Dashboard kontrol lampu IoT dengan dukungan Blynk Cloud & ESP langsung."
+    />
+    <title>LumiHome · Dashboard Lampu IoT</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/CSS/style.css" />
+  </head>
+  <body>
+    <!-- ===== HEADER ===== -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22">
+            <path
+              fill="currentColor"
+              d="M12 2a7 7 0 0 0-4 12.74V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.26A7 7 0 0 0 12 2Zm-2 19a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-1h-4v1Z"
+            />
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>LumiHome</h1>
+          <span class="brand-sub">Smart Home Light Controls</span>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <div class="clock" id="clock" aria-live="off">--:--</div>
+        <div class="status-pill" id="statusPill">
+          <span class="dot" id="dot"></span>
+          <span id="stxt">Belum terhubung</span>
+        </div>
+        <button
+          class="icon-btn"
+          id="themeToggle"
+          aria-label="Ganti tema"
+          title="Ganti tema"
+        >
+          <svg class="ico-moon" viewBox="0 0 24 24" width="18" height="18">
+            <path
+              fill="currentColor"
+              d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79Z"
+            />
+          </svg>
+          <svg class="ico-sun" viewBox="0 0 24 24" width="18" height="18">
+            <path
+              fill="currentColor"
+              d="M12 17a5 5 0 1 1 0-10 5 5 0 0 1 0 10Zm0-13a1 1 0 0 1 1 1v1a1 1 0 0 1-2 0V5a1 1 0 0 1 1-1Zm0 15a1 1 0 0 1 1 1v1a1 1 0 0 1-2 0v-1a1 1 0 0 1 1-1ZM4 12a1 1 0 0 1 1-1h1a1 1 0 0 1 0 2H5a1 1 0 0 1-1-1Zm15 0a1 1 0 0 1 1-1h1a1 1 0 0 1 0 2h-1a1 1 0 0 1-1-1ZM5.64 5.64a1 1 0 0 1 1.41 0l.71.71A1 1 0 0 1 6.35 7.76l-.71-.71a1 1 0 0 1 0-1.41Zm11.31 11.31a1 1 0 0 1 1.41 0l.71.71a1 1 0 1 1-1.41 1.41l-.71-.71a1 1 0 0 1 0-1.41ZM18.36 5.64a1 1 0 0 1 0 1.41l-.71.71a1 1 0 1 1-1.41-1.41l.71-.71a1 1 0 0 1 1.41 0ZM7.05 16.95a1 1 0 0 1 0 1.41l-.71.71a1 1 0 1 1-1.41-1.41l.71-.71a1 1 0 0 1 1.41 0Z"
+            />
+          </svg>
+        </button>
+        <button
+          class="icon-btn"
+          id="btnSet"
+          aria-label="Pengaturan"
+          title="Pengaturan"
+        >
+          <svg viewBox="0 0 24 24" width="18" height="18">
+            <path
+              fill="currentColor"
+              d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm8.94 4.94-1.66-.42a7 7 0 0 0-.66-1.6l.9-1.47a1 1 0 0 0-.17-1.25l-1.29-1.29a1 1 0 0 0-1.25-.17l-1.47.9a7 7 0 0 0-1.6-.66l-.42-1.66a1 1 0 0 0-.97-.75h-1.83a1 1 0 0 0-.97.75l-.42 1.66a7 7 0 0 0-1.6.66l-1.47-.9a1 1 0 0 0-1.25.17L3.8 9.2a1 1 0 0 0-.17 1.25l.9 1.47a7 7 0 0 0-.66 1.6l-1.66.42a1 1 0 0 0-.75.97v1.83a1 1 0 0 0 .75.97l1.66.42c.15.57.38 1.1.66 1.6l-.9 1.47a1 1 0 0 0 .17 1.25l1.29 1.29a1 1 0 0 0 1.25.17l1.47-.9c.5.28 1.03.51 1.6.66l.42 1.66c.1.44.5.75.97.75h1.83c.47 0 .87-.31.97-.75l.42-1.66a7 7 0 0 0 1.6-.66l1.47.9a1 1 0 0 0 1.25-.17l1.29-1.29a1 1 0 0 0 .17-1.25l-.9-1.47c.28-.5.51-1.03.66-1.6l1.66-.42c.44-.1.75-.5.75-.97v-1.83a1 1 0 0 0-.75-.97Z"
+            />
+          </svg>
+        </button>
+        <button
+          class="icon-btn"
+          id="btnInfo"
+          aria-label="Info project"
+          title="Info project"
+        >
+          <svg viewBox="0 0 24 24" width="18" height="18">
+            <path
+              fill="currentColor"
+              d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm1 15h-2v-6h2v6Zm0-8h-2V7h2v2Z"
+            />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- ===== MAIN ===== -->
+    <main>
+      <!-- Stat cards -->
+      <section class="stats" aria-label="Statistik">
+        <div class="stat-card">
+          <div class="stat-icon" data-tone="amber">⏱</div>
+          <div class="stat-body">
+            <div class="stat-label">Aplikasi aktif</div>
+            <div class="stat-value" id="appUptime">00:00:00</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" data-tone="cyan">📡</div>
+          <div class="stat-body">
+            <div class="stat-label">Perangkat aktif</div>
+            <div class="stat-value" id="devUptime">--:--:--</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" data-tone="violet">💡</div>
+          <div class="stat-body">
+            <div class="stat-label">Lampu menyala</div>
+            <div class="stat-value"><span id="onCount">0</span> / 4</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon" data-tone="green">⚡</div>
+          <div class="stat-body">
+            <div class="stat-label">Timer aktif</div>
+            <div class="stat-value"><span id="timerCount">0</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Toolbar -->
+      <section class="toolbar" aria-label="Kontrol cepat">
+        <div class="toolbar-left">
+          <button id="allOnOff" class="btn-primary">Nyalakan semua</button>
+          <button id="btnUniversal">Timer Universal</button>
+        </div>
+        <div class="scenes" role="group" aria-label="Scene cepat">
+          <button class="scene" data-scene="all-off">🌙 Semua mati</button>
+          <button class="scene" data-scene="all-on">☀️ Semua nyala</button>
+          <button class="scene" data-scene="sleep">😴 Mode tidur</button>
+          <button class="scene" data-scene="away">🚪 Keluar rumah</button>
+        </div>
+      </section>
+
+      <!-- Grid lampu -->
+      <section class="grid" id="grid" aria-label="Daftar lampu"></section>
+    </main>
+
+    <!-- ===== ACTIVITY LOG ===== -->
+    <aside class="activity" aria-label="Riwayat aktivitas">
+      <div class="activity-head">
+        <h2>Riwayat</h2>
+        <button id="clearLog" class="link-btn">Bersihkan</button>
+      </div>
+      <ul id="logList" class="log-list"></ul>
+    </aside>
+
+    <!-- ===== DIALOG PENGATURAN ===== -->
+    <dialog id="dlg">
+      <h2 class="dialog-title">Pengaturan koneksi</h2>
+      <label for="mode">Mode</label>
+      <select id="mode">
+        <option value="demo">Demo (tanpa perangkat)</option>
+        <option value="blynk">Blynk Cloud (jarak jauh)</option>
+        <option value="esp">ESP langsung (satu jaringan WiFi)</option>
+      </select>
+
+      <div id="fBlynk" hidden>
+        <label for="token">Auth Token Blynk</label>
+        <input id="token" autocomplete="off" />
+        <label for="server">Server</label>
+        <select id="server">
+          <option value="blynk.cloud">blynk.cloud</option>
+          <option value="sgp1.blynk.cloud">sgp1.blynk.cloud (Singapura)</option>
+          <option value="fra1.blynk.cloud">fra1.blynk.cloud</option>
+          <option value="ny3.blynk.cloud">ny3.blynk.cloud</option>
+        </select>
+        <label>Virtual Pin tiap lampu</label>
+        <div class="row">
+          <input id="vp1" placeholder="V1" />
+          <input id="vp2" placeholder="V2" />
+          <input id="vp3" placeholder="V3" />
+          <input id="vp4" placeholder="V4" />
+        </div>
+      </div>
+
+      <div id="fEsp" hidden>
+        <label for="ip">Alamat IP ESP</label>
+        <input id="ip" placeholder="192.168.1.50" />
+        <p class="hint">
+          Dashboard memanggil <code>/set?ch=1&amp;state=1</code> dan
+          <code>/status</code>. Buka file ini langsung dari komputer/ponsel,
+          bukan lewat https.
+        </p>
+      </div>
+
+      <label>Nama lampu</label>
+      <div class="row">
+        <input id="n1" /><input id="n2" /><input id="n3" /><input id="n4" />
+      </div>
+
+      <div class="actions">
+        <button id="cancel">Batal</button>
+        <button class="btn-primary" id="save">Simpan</button>
+      </div>
+    </dialog>
+
+    <!-- ===== DIALOG TIMER ===== -->
+    <dialog id="dlgTimer">
+      <h2 class="dialog-title" id="timerTitle">Timer Lampu</h2>
+      <p class="hint" id="timerInfo">Atur waktu nyala/mati otomatis.</p>
+
+      <label>Durasi Timer</label>
+      <div class="timer-grid">
+        <div>
+          <label for="tDay">Hari</label>
+          <input id="tDay" type="number" min="0" max="30" value="0" />
+        </div>
+        <div>
+          <label for="tHour">Jam</label>
+          <input id="tHour" type="number" min="0" max="23" value="0" />
+        </div>
+        <div>
+          <label for="tMin">Menit</label>
+          <input id="tMin" type="number" min="0" max="59" value="1" />
+        </div>
+        <div>
+          <label for="tSec">Detik</label>
+          <input id="tSec" type="number" min="0" max="59" value="0" />
+        </div>
+      </div>
+
+      <label for="timerAction">Aksi setelah timer selesai</label>
+      <select id="timerAction">
+        <option value="off">Matikan lampu</option>
+        <option value="on">Nyalakan lampu</option>
+        <option value="toggle">Balik kondisi (toggle)</option>
+      </select>
+
+      <div class="actions">
+        <button id="timerCancel">Batal</button>
+        <button id="timerStop" hidden>Hentikan Timer</button>
+        <button class="btn-primary" id="timerStart">Mulai Timer</button>
+      </div>
+    </dialog>
+
+    <!-- ===== DIALOG TIMER UNIVERSAL ===== -->
+    <dialog id="dlgUniTimer">
+      <h2 class="dialog-title">Timer Universal</h2>
+      <p class="hint">Timer ini berlaku untuk semua lampu sekaligus.</p>
+
+      <label>Durasi Timer</label>
+      <div class="timer-grid">
+        <div>
+          <label for="uDay">Hari</label>
+          <input id="uDay" type="number" min="0" max="30" value="0" />
+        </div>
+        <div>
+          <label for="uHour">Jam</label>
+          <input id="uHour" type="number" min="0" max="23" value="0" />
+        </div>
+        <div>
+          <label for="uMin">Menit</label>
+          <input id="uMin" type="number" min="0" max="59" value="1" />
+        </div>
+        <div>
+          <label for="uSec">Detik</label>
+          <input id="uSec" type="number" min="0" max="59" value="0" />
+        </div>
+      </div>
+
+      <label for="uniAction">Aksi setelah timer selesai</label>
+      <select id="uniAction">
+        <option value="off">Matikan semua lampu</option>
+        <option value="on">Nyalakan semua lampu</option>
+        <option value="toggle">Balik kondisi semua lampu</option>
+      </select>
+
+      <div class="actions">
+        <button id="uniCancel">Batal</button>
+        <button id="uniStop" hidden>Hentikan Timer</button>
+        <button class="btn-primary" id="uniStart">Mulai Timer</button>
+      </div>
+    </dialog>
+
+    <!-- ===== OVERLAY INFO PROJECT ===== -->
+    <div id="infoOverlay" class="info-overlay" hidden>
+      <div class="info-backdrop" data-close-info></div>
+
+      <div
+        class="info-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="infoTitle"
+      >
+        <button class="info-close" id="infoClose" aria-label="Tutup">✕</button>
+
+        <!-- Header -->
+        <div class="info-hero">
+          <div class="info-logo">
+            <svg viewBox="0 0 24 24" width="28" height="28">
+              <path
+                fill="currentColor"
+                d="M12 2a7 7 0 0 0-4 12.74V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.26A7 7 0 0 0 12 2Zm-2 19a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-1h-4v1Z"
+              />
+            </svg>
+          </div>
+          <div>
+            <h2 id="infoTitle">LumiHome</h2>
+            <p class="info-tagline">Smart Lighting Dashboard · v1.0</p>
+          </div>
+        </div>
+
+        <!-- Deskripsi -->
+        <p class="info-desc">
+          Website Smart Home berbasis <strong>IoT</strong> yang dapat digunakan
+          untuk mengontrol lampu rumah dari jarak jauh. website ini Mendukung
+          tiga mode koneksi: <strong>Demo</strong> (tanpa perangkat),
+          <strong>Blynk Cloud</strong> (jarak jauh), dan
+          <strong>ESP langsung</strong> (satu jaringan WiFi).
+        </p>
+
+        <!-- Fitur utama -->
+        <div class="info-section">
+          <h3>Fitur Utama</h3>
+          <ul class="info-features">
+            <li>
+              <span class="feat-dot" style="background: #ffb547"></span> Kontrol
+              on/off 4 lampu + status real-time
+            </li>
+            <li>
+              <span class="feat-dot" style="background: #22d3ee"></span> Timer
+              per lampu & timer universal
+            </li>
+            <li>
+              <span class="feat-dot" style="background: #8b7cf6"></span> Scene
+              cepat: tidur, keluar rumah, semua on/off
+            </li>
+            <li>
+              <span class="feat-dot" style="background: #6fd6b0"></span>
+              Multi-mode: Demo · Blynk Cloud · ESP langsung
+            </li>
+            <li>
+              <span class="feat-dot" style="background: #ff7a6b"></span>
+              Activity log, dark/light theme, responsif
+            </li>
+          </ul>
+        </div>
+
+        <!-- Tech stack -->
+        <div class="info-section">
+          <h3>Dibangun Dengan</h3>
+          <div class="info-tags">
+            <span class="tag">HTML5</span>
+            <span class="tag">CSS3</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">Blynk Cloud</span>
+            <span class="tag">ESP8266 / ESP32</span>
+          </div>
+        </div>
+
+        <!-- Info runtime (diisi JS) -->
+        <div class="info-section">
+          <h3>Status Runtime</h3>
+          <div class="info-runtime">
+            <div>
+              <span class="runtime-label">Mode</span>
+              <span class="runtime-value" id="infoMode">demo</span>
+            </div>
+            <div>
+              <span class="runtime-label">Aplikasi aktif</span>
+              <span class="runtime-value" id="infoUptime">00:00:00</span>
+            </div>
+            <div>
+              <span class="runtime-label">Perangkat</span>
+              <span class="runtime-value" id="infoDevice">Offline</span>
+            </div>
+            <div>
+              <span class="runtime-label">Lampu menyala</span>
+              <span class="runtime-value"
+                ><span id="infoOnCount">0</span> / 4</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="info-footer">
+          <p>©2026 LumiHome · All right reserved</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div id="toast" role="status" aria-live="polite"></div>
+
+    <script src="assets/JS/script.js"></script>
+  </body>
+</html>
